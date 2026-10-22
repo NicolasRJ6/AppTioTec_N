@@ -78,4 +78,17 @@ Para compilar desde la terminal:
 
 ## Planificación
 
-El avance y el reparto de tareas se registran en el tablero de Trello del equipo.
+El avance y el reparto de tareas se registran en el tablero de Trello del equipo:
+https://trello.com/b/f0eKbBfy/ep2-tiotec
+
+## Estado del proyecto
+
+| Indicador | Estado |
+|---|---|
+| Interfaz y navegación | Base lista: `NavHost` con Home, Perfil y Ajustes |
+| Formularios validados | Pendiente |
+| Validación desacoplada | Pendiente |
+| Animaciones | Pendiente |
+| Modularidad y persistencia local | Room implementado (perfil, evaluaciones, respuestas y checklist) |
+| GitHub y Trello | Repositorio y tablero activos |
+| Recursos nativos | Pendiente (galería y notificaciones) |
