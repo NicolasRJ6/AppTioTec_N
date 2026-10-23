@@ -2,6 +2,7 @@ package com.example.apptiotec_n.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -42,6 +43,15 @@ fun HomeScreen(
                     onClick = {
                         scope.launch { drawerState.close() }
                         viewModel.navigateTo(Screen.Profile)
+                    }
+                )
+                NavigationDrawerItem(
+                    label = { Text("Historial") },
+                    icon = { Icon(Icons.Default.History, contentDescription = null) },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        viewModel.navigateTo(Screen.Historial)
                     }
                 )
                 NavigationDrawerItem(
@@ -86,6 +96,10 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(onClick = { viewModel.navigateTo(Screen.Evaluacion) }) {
                     Text("Comenzar evaluación")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = { viewModel.navigateTo(Screen.Historial) }) {
+                    Text("Ver historial")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { viewModel.navigateTo(Screen.Settings) }) {
