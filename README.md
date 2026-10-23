@@ -24,12 +24,14 @@ Evaluación Parcial 2, DUOC UC.
 - **Resultado:** puntaje de 0 a 100, nivel de riesgo (verde, amarillo o rojo), brechas por
   categoría y recomendaciones priorizadas.
 - **Checklist de acciones:** tareas pendientes y completadas, guardadas en el dispositivo.
-- **Historial:** evaluaciones anteriores almacenadas localmente.
-- **Evidencia con galería:** adjuntar una imagen ficticia al perfil.
-- **Recordatorios:** notificación local para volver a evaluar.
+- **Historial:** evaluaciones anteriores almacenadas localmente, con el detalle de sus
+  acciones.
+- **Ajustes:** activación y hora del recordatorio, guardadas en el dispositivo con DataStore.
 
 Todos los datos son ficticios. La aplicación no registra información real, sensible ni de
 menores.
+
+**Pendiente:** evidencia con galería y notificaciones (los dos recursos nativos).
 
 ## Arquitectura
 
@@ -45,8 +47,8 @@ app/src/main/java/com/example/apptiotec_n/
     repository/       repositorios que conectan datos con ViewModel
   ui/
     screens/          una pantalla por flujo
-    components/       componentes reutilizables
     theme/            colores y tipografía
+    utils/            utilidades de tamaño de pantalla
   viewmodel/          estado de la UI y validaciones
   navigation/         rutas y eventos de navegación
 ```
@@ -87,8 +89,8 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 |---|---|
 | Interfaz y navegación | `NavHost` con Home, Perfil, Evaluación, Resultado, Historial y Ajustes |
 | Formularios validados | Perfil con 4 campos y evaluación con 10 preguntas, con error por campo |
-| Validación desacoplada | Validación en `PerfilViewModel` y `EvaluacionViewModel` |
-| Animaciones | Progreso animado, errores con `AnimatedVisibility`, checklist con `animateContentSize` y detalle desplegable del historial |
-| Modularidad y persistencia local | Room en uso: perfil, evaluaciones, respuestas y checklist; el historial se lee desde la base local |
+| Validación desacoplada | Validación en `PerfilViewModel`, `EvaluacionViewModel` y `AjustesViewModel` |
+| Animaciones | Errores de la evaluación, checklist del resultado, aviso de guardado y detalle del historial, todas con `AnimatedVisibility` |
+| Modularidad y persistencia local | Room para perfil, evaluaciones, respuestas y checklist; DataStore para los ajustes del recordatorio; el historial se lee desde la base local |
 | GitHub y Trello | Repositorio y tablero activos |
 | Recursos nativos | Pendiente (galería y notificaciones) |
