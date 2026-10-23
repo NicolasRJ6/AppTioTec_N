@@ -16,8 +16,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apptiotec_n.navigation.NavigationEvent
 import com.example.apptiotec_n.navigation.Screen
+import com.example.apptiotec_n.ui.screens.EvaluacionScreen
 import com.example.apptiotec_n.ui.screens.HomeScreen
 import com.example.apptiotec_n.ui.screens.ProfileScreen
+import com.example.apptiotec_n.ui.screens.ResultadoScreen
 import com.example.apptiotec_n.ui.screens.SettingsScreen
 import com.example.apptiotec_n.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -70,6 +72,12 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(route = Screen.Settings.route) {
                                 SettingsScreen(navController = navController, viewModel = viewModel)
+                            }
+                            composable(route = Screen.Evaluacion.route) {
+                                EvaluacionScreen(navController = navController, viewModel = viewModel)
+                            }
+                            composable(route = Screen.Resultado.route) {
+                                ResultadoScreen(navController = navController, viewModel = viewModel)
                             }
                         }
                     }

@@ -84,7 +84,11 @@ fun HomeScreen(
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { viewModel.navigateTo(Screen.Settings) }) {
+                Button(onClick = { viewModel.navigateTo(Screen.Evaluacion) }) {
+                    Text("Comenzar evaluación")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = { viewModel.navigateTo(Screen.Settings) }) {
                     Text("Ir a Configuración")
                 }
             }
