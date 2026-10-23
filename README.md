@@ -85,10 +85,10 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 
 | Indicador | Estado |
 |---|---|
-| Interfaz y navegación | Base lista: `NavHost` con Home, Perfil y Ajustes |
+| Interfaz y navegación | `NavHost` con Home, Perfil, Evaluación, Resultado y Ajustes |
 | Formularios validados | Formulario de perfil con 4 campos y error por campo |
 | Validación desacoplada | Validación en `PerfilViewModel.validarFormulario()` |
 | Animaciones | Aviso de perfil guardado con `AnimatedVisibility` |
-| Modularidad y persistencia local | Room implementado (perfil, evaluaciones, respuestas y checklist) |
+| Modularidad y persistencia local | Room en uso: perfil, evaluaciones, respuestas y checklist |
 | GitHub y Trello | Repositorio y tablero activos |
 | Recursos nativos | Pendiente (galería y notificaciones) |
