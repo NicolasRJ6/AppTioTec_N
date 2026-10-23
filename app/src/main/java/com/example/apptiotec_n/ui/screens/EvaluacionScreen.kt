@@ -1,5 +1,6 @@
 package com.example.apptiotec_n.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -111,7 +112,7 @@ fun EvaluacionScreen(
                                 )
                             }
                         }
-                        if (tieneError) {
+                        AnimatedVisibility(visible = tieneError) {
                             Text(
                                 text = "Falta responder esta pregunta",
                                 style = MaterialTheme.typography.bodySmall,
@@ -122,9 +123,9 @@ fun EvaluacionScreen(
                 }
             }
 
-            estado.mensajeError?.let { mensaje ->
+            AnimatedVisibility(visible = estado.mensajeError != null) {
                 Text(
-                    text = mensaje,
+                    text = estado.mensajeError ?: "",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.error
                 )

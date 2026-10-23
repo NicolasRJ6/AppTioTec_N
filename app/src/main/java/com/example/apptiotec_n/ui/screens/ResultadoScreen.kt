@@ -1,5 +1,6 @@
 package com.example.apptiotec_n.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -90,6 +91,15 @@ fun ResultadoScreen(
                 }
             }
 
+            LinearProgressIndicator(
+                progress = { estado.puntaje / 100f },
+                color = colorRiesgo,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(10.dp)
+            )
+
             Text(
                 text = "Puntaje sobre 100. Sobre 80 el riesgo es bajo, entre 50 y 79 es medio, bajo 50 es alto.",
                 style = MaterialTheme.typography.bodySmall,
@@ -111,31 +121,38 @@ fun ResultadoScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (estado.acciones.isEmpty()) {
+            AnimatedVisibility(visible = !estado.cargando && estado.acciones.isEmpty()) {
                 Text(
                     text = "No quedaron acciones pendientes. Buen trabajo.",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
-            estado.acciones.forEach { accion ->
-                Card(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Checkbox(
-                            checked = accion.completada,
-                            onCheckedChange = { marcada ->
-                                resultadoViewModel.marcarAccion(accion.id, marcada)
+            AnimatedVisibility(visible = estado.acciones.isNotEmpty()) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    estado.acciones.forEach { accion ->
+                        Card(modifier = Modifier.fillMaxWidth()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
+                                    checked = accion.completada,
+                                    onCheckedChange = { marcada ->
+                                        resultadoViewModel.marcarAccion(accion.id, marcada)
+                                    }
+                                )
+                                Text(
+                                    text = accion.texto,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
-                        )
-                        Text(
-                            text = accion.texto,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                        }
                     }
                 }
             }
