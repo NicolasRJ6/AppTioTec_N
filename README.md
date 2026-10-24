@@ -8,6 +8,10 @@ recomendaciones claras para reducir riesgos.
 Proyecto académico de la asignatura **DSY1105 — Desarrollo de Aplicaciones Móviles**,
 Evaluación Parcial 2, DUOC UC.
 
+## Repositorio
+
+https://github.com/NicolasRJ6/AppTioTec_N
+
 ## Integrantes
 
 - Sebastián Anipán
@@ -27,11 +31,13 @@ Evaluación Parcial 2, DUOC UC.
 - **Historial:** evaluaciones anteriores almacenadas localmente, con el detalle de sus
   acciones.
 - **Ajustes:** activación y hora del recordatorio, guardadas en el dispositivo con DataStore.
+- **Foto de perfil desde la galería:** se elige una imagen del teléfono, se copia a la carpeta
+  privada de la app y se muestra redonda en el perfil.
+- **Notificaciones:** canal de recordatorios, permiso de Android 13 en adelante y botón para
+  probar el aviso.
 
 Todos los datos son ficticios. La aplicación no registra información real, sensible ni de
 menores.
-
-**Pendiente:** evidencia con galería y notificaciones (los dos recursos nativos).
 
 ## Arquitectura
 
@@ -93,4 +99,4 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 | Animaciones | Errores de la evaluación, checklist del resultado, aviso de guardado y detalle del historial, todas con `AnimatedVisibility` |
 | Modularidad y persistencia local | Room para perfil, evaluaciones, respuestas y checklist; DataStore para los ajustes del recordatorio; el historial se lee desde la base local |
 | GitHub y Trello | Repositorio y tablero activos |
-| Recursos nativos | Pendiente (galería y notificaciones) |
+| Recursos nativos | Galería (`ActivityResultContracts.GetContent`) y notificaciones (`POST_NOTIFICATIONS`) integradas en Perfil y Ajustes |
