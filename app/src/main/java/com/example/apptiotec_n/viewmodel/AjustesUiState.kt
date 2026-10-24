@@ -4,5 +4,6 @@ data class AjustesUiState(
     val recordatorioActivo: Boolean = false,
     val horaRecordatorio: String = "20:00",
     val errorHora: String? = null,
+    val mensajeError: String? = null,
     val guardado: Boolean = false
 )

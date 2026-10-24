@@ -104,16 +104,25 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         val estado = _uiState.value
 
         viewModelScope.launch {
-            repositorio.guardarPerfil(
-                Perfil(
-                    alias = estado.alias.trim(),
-                    nivelExperiencia = estado.nivelExperiencia,
-                    dispositivo = estado.dispositivo.trim(),
-                    sistemaOperativo = estado.sistemaOperativo.trim(),
-                    imagenUri = estado.imagenUri
+            try {
+                repositorio.guardarPerfil(
+                    Perfil(
+                        alias = estado.alias.trim(),
+                        nivelExperiencia = estado.nivelExperiencia,
+                        dispositivo = estado.dispositivo.trim(),
+                        sistemaOperativo = estado.sistemaOperativo.trim(),
+                        imagenUri = estado.imagenUri
+                    )
                 )
-            )
-            _uiState.value = _uiState.value.copy(perfilGuardado = true)
+                _uiState.value = _uiState.value.copy(
+                    perfilGuardado = true,
+                    mensajeError = null
+                )
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    mensajeError = "No se pudo guardar el perfil"
+                )
+            }
         }
     }
 

@@ -179,6 +179,14 @@ fun SettingsScreen(
                 Text("Probar recordatorio")
             }
 
+            AnimatedVisibility(visible = estado.mensajeError != null) {
+                Text(
+                    text = estado.mensajeError ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
             AnimatedVisibility(visible = estado.guardado) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),

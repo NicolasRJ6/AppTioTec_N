@@ -221,6 +221,14 @@ fun ProfileScreen(
                 Text("Guardar perfil")
             }
 
+            AnimatedVisibility(visible = estado.mensajeError != null) {
+                Text(
+                    text = estado.mensajeError ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
             AnimatedVisibility(visible = estado.perfilGuardado) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),

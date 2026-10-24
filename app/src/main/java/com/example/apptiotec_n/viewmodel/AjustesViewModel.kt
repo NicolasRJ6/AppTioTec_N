@@ -65,13 +65,19 @@ class AjustesViewModel(application: Application) : AndroidViewModel(application)
         val estado = _uiState.value
 
         viewModelScope.launch {
-            repositorio.guardar(
-                Ajustes(
-                    recordatorioActivo = estado.recordatorioActivo,
-                    horaRecordatorio = estado.horaRecordatorio.trim()
+            try {
+                repositorio.guardar(
+                    Ajustes(
+                        recordatorioActivo = estado.recordatorioActivo,
+                        horaRecordatorio = estado.horaRecordatorio.trim()
+                    )
                 )
-            )
-            _uiState.value = _uiState.value.copy(guardado = true)
+                _uiState.value = _uiState.value.copy(guardado = true, mensajeError = null)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    mensajeError = "No se pudieron guardar los ajustes"
+                )
+            }
         }
     }
 

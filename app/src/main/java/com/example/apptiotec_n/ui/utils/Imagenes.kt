@@ -7,12 +7,14 @@ import java.io.File
 fun copiarImagenAlPerfil(contexto: Context, origen: Uri): String? {
     val destino = File(contexto.filesDir, "foto_perfil.jpg")
 
-    val entrada = contexto.contentResolver.openInputStream(origen) ?: return null
-    entrada.use { flujoEntrada ->
-        destino.outputStream().use { flujoSalida ->
-            flujoEntrada.copyTo(flujoSalida)
+    return try {
+        contexto.contentResolver.openInputStream(origen)?.use { flujoEntrada ->
+            destino.outputStream().use { flujoSalida ->
+                flujoEntrada.copyTo(flujoSalida)
+            }
+            destino.absolutePath
         }
+    } catch (e: Exception) {
+        null
     }
-
-    return destino.absolutePath
 }

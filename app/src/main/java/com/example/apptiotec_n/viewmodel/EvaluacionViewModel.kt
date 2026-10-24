@@ -75,13 +75,19 @@ class EvaluacionViewModel(application: Application) : AndroidViewModel(applicati
                 .filter { (estado.respuestas[it.id] ?: 0) < 10 }
                 .map { Accion(evaluacionId = 0, texto = it.recomendacion) }
 
-            repositorio.guardarEvaluacion(
-                Evaluacion(fecha = System.currentTimeMillis(), puntaje = puntaje, riesgo = riesgo),
-                respuestas,
-                acciones
-            )
-
-            _uiState.value = _uiState.value.copy(guardando = false, terminada = true)
+            try {
+                repositorio.guardarEvaluacion(
+                    Evaluacion(fecha = System.currentTimeMillis(), puntaje = puntaje, riesgo = riesgo),
+                    respuestas,
+                    acciones
+                )
+                _uiState.value = _uiState.value.copy(guardando = false, terminada = true)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    guardando = false,
+                    mensajeError = "No se pudo guardar la evaluación"
+                )
+            }
         }
     }
 
