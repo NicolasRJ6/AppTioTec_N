@@ -1,10 +1,16 @@
 package com.example.apptiotec_n.ui.screens
 
+import android.graphics.BitmapFactory
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -14,14 +20,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.apptiotec_n.navigation.Screen
+import com.example.apptiotec_n.ui.utils.copiarImagenAlPerfil
 import com.example.apptiotec_n.viewmodel.MainViewModel
 import com.example.apptiotec_n.viewmodel.PerfilViewModel
 import kotlinx.coroutines.delay
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +45,28 @@ fun ProfileScreen(
     var selectedItem by remember { mutableIntStateOf(1) }
     val estado by perfilViewModel.uiState.collectAsState()
     val niveles = listOf("Básico", "Intermedio", "Avanzado")
+    val contexto = LocalContext.current
+
+    val selectorImagen = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val ruta = copiarImagenAlPerfil(contexto, uri)
+            if (ruta != null) {
+                perfilViewModel.cambiarImagen(ruta)
+            }
+        }
+    }
+
+    val fotoPerfil = remember(estado.imagenUri) {
+        estado.imagenUri?.let { ruta ->
+            if (File(ruta).exists()) {
+                BitmapFactory.decodeFile(ruta)?.asImageBitmap()
+            } else {
+                null
+            }
+        }
+    }
 
     LaunchedEffect(estado.perfilGuardado) {
         if (estado.perfilGuardado) {
@@ -149,6 +183,34 @@ fun ProfileScreen(
             )
 
             Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                text = "Foto de perfil (opcional)",
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (fotoPerfil != null) {
+                    Image(
+                        bitmap = fotoPerfil,
+                        contentDescription = "Foto de perfil elegida",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(72.dp)
+                            .clip(CircleShape)
+                    )
+                }
+
+                OutlinedButton(onClick = { selectorImagen.launch("image/*") }) {
+                    Icon(Icons.Default.AddAPhoto, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(if (fotoPerfil == null) "Elegir de la galería" else "Cambiar foto")
+                }
+            }
 
             Button(
                 onClick = { perfilViewModel.guardarPerfil() },

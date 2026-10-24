@@ -26,7 +26,8 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
                     alias = perfil.alias,
                     nivelExperiencia = perfil.nivelExperiencia,
                     dispositivo = perfil.dispositivo,
-                    sistemaOperativo = perfil.sistemaOperativo
+                    sistemaOperativo = perfil.sistemaOperativo,
+                    imagenUri = perfil.imagenUri
                 )
             }
         }
@@ -58,6 +59,10 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
             sistemaOperativo = valor,
             errores = _uiState.value.errores.copy(sistemaOperativo = null)
         )
+    }
+
+    fun cambiarImagen(ruta: String) {
+        _uiState.value = _uiState.value.copy(imagenUri = ruta)
     }
 
     fun validarFormulario(): Boolean {
@@ -104,7 +109,8 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
                     alias = estado.alias.trim(),
                     nivelExperiencia = estado.nivelExperiencia,
                     dispositivo = estado.dispositivo.trim(),
-                    sistemaOperativo = estado.sistemaOperativo.trim()
+                    sistemaOperativo = estado.sistemaOperativo.trim(),
+                    imagenUri = estado.imagenUri
                 )
             )
             _uiState.value = _uiState.value.copy(perfilGuardado = true)

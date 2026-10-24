@@ -5,6 +5,7 @@ data class PerfilUiState(
     val nivelExperiencia: String = "",
     val dispositivo: String = "",
     val sistemaOperativo: String = "",
+    val imagenUri: String? = null,
     val errores: PerfilErrores = PerfilErrores(),
     val perfilGuardado: Boolean = false
 )
