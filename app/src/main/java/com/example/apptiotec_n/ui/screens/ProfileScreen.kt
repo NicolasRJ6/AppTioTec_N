@@ -58,7 +58,7 @@ fun ProfileScreen(
         }
     }
 
-    val fotoPerfil = remember(estado.imagenUri) {
+    val fotoPerfil = remember(estado.imagenUri, estado.imagenVersion) {
         estado.imagenUri?.let { ruta ->
             if (File(ruta).exists()) {
                 BitmapFactory.decodeFile(ruta)?.asImageBitmap()

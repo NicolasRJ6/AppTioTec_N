@@ -6,6 +6,7 @@ data class PerfilUiState(
     val dispositivo: String = "",
     val sistemaOperativo: String = "",
     val imagenUri: String? = null,
+    val imagenVersion: Int = 0,
     val errores: PerfilErrores = PerfilErrores(),
     val mensajeError: String? = null,
     val perfilGuardado: Boolean = false

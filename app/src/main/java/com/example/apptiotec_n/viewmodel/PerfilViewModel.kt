@@ -62,7 +62,10 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun cambiarImagen(ruta: String) {
-        _uiState.value = _uiState.value.copy(imagenUri = ruta)
+        _uiState.value = _uiState.value.copy(
+            imagenUri = ruta,
+            imagenVersion = _uiState.value.imagenVersion + 1
+        )
     }
 
     fun validarFormulario(): Boolean {
