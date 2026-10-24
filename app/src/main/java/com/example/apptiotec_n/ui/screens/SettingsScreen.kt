@@ -1,5 +1,8 @@
 package com.example.apptiotec_n.ui.screens
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -29,12 +33,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.apptiotec_n.notificaciones.crearCanalRecordatorios
+import com.example.apptiotec_n.notificaciones.tienePermisoDeNotificaciones
 import com.example.apptiotec_n.viewmodel.AjustesViewModel
 import com.example.apptiotec_n.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
@@ -47,6 +57,24 @@ fun SettingsScreen(
     ajustesViewModel: AjustesViewModel = viewModel()
 ) {
     val estado by ajustesViewModel.uiState.collectAsState()
+    val contexto = LocalContext.current
+
+    var permisoNotificaciones by remember {
+        mutableStateOf(tienePermisoDeNotificaciones(contexto))
+    }
+
+    val pedirPermiso = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { concedido ->
+        permisoNotificaciones = concedido
+        if (concedido) {
+            ajustesViewModel.probarRecordatorio()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        crearCanalRecordatorios(contexto)
+    }
 
     LaunchedEffect(estado.guardado) {
         if (estado.guardado) {
@@ -136,6 +164,19 @@ fun SettingsScreen(
                     .height(52.dp)
             ) {
                 Text("Guardar ajustes")
+            }
+
+            OutlinedButton(
+                onClick = {
+                    if (permisoNotificaciones) {
+                        ajustesViewModel.probarRecordatorio()
+                    } else {
+                        pedirPermiso.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Probar recordatorio")
             }
 
             AnimatedVisibility(visible = estado.guardado) {

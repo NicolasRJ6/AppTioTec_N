@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptiotec_n.data.preference.AjustesRepository
 import com.example.apptiotec_n.model.Ajustes
+import com.example.apptiotec_n.notificaciones.mostrarRecordatorio
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,5 +77,12 @@ class AjustesViewModel(application: Application) : AndroidViewModel(application)
 
     fun avisoMostrado() {
         _uiState.value = _uiState.value.copy(guardado = false)
+    }
+
+    fun probarRecordatorio() {
+        mostrarRecordatorio(
+            getApplication(),
+            _uiState.value.horaRecordatorio.trim()
+        )
     }
 }
