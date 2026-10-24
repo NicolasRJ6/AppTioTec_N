@@ -14,7 +14,7 @@ https://github.com/NicolasRJ6/AppTioTec_N
 
 ## Integrantes
 
-- Sebastián Anipán
+- Sebastián Antipán
 - Nicolás Delgado
 
 **Grupo:** 12
