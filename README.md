@@ -35,6 +35,9 @@ https://github.com/NicolasRJ6/AppTioTec_N
   privada de la app y se muestra redonda en el perfil.
 - **Notificaciones:** canal de recordatorios, permiso de Android 13 en adelante y botón para
   probar el aviso.
+- **Consejos de seguridad desde API REST:** consume `jsonplaceholder.typicode.com/posts` con
+  Retrofit y guarda una copia local en Room. La pantalla muestra la última actualización y
+  sigue funcionando sin conexión con los datos guardados.
 
 Todos los datos son ficticios. La aplicación no registra información real, sensible ni de
 menores.
@@ -49,8 +52,10 @@ app/src/main/java/com/example/apptiotec_n/
   model/              clases de datos del dominio
   data/
     local/            Room: entidades, DAOs y base de datos
+    model/            modelos de la API remota (Consejo)
     preference/       DataStore: preferencias y recordatorios
-    repository/       repositorios que conectan datos con ViewModel
+    remote/           Retrofit: ApiService y RetrofitInstance
+    repository/       repositorios que conectan datos locales y remotos con ViewModel
   ui/
     screens/          una pantalla por flujo
     theme/            colores y tipografía
@@ -61,6 +66,28 @@ app/src/main/java/com/example/apptiotec_n/
 
 La interfaz no valida nada: solo observa el estado que expone el ViewModel y le envía
 eventos. Toda la lógica de validación vive en el ViewModel.
+
+## Consumo de API REST y persistencia
+
+La pantalla **Consejos de seguridad** implementa el flujo de la Experiencia de Aprendizaje 3:
+
+```
+JSONPlaceholder (/posts)
+        ↓ Retrofit
+ConsejosRepository
+        ↓ Room (tabla consejos)
+ConsejosViewModel (StateFlow)
+        ↓
+ConsejosScreen (Compose)
+```
+
+1. Al abrir, el ViewModel observa la copia local de Room y la muestra de inmediato.
+2. En paralelo, `sincronizar()` descarga los consejos con Retrofit.
+3. La respuesta se guarda en Room en una sola transacción, junto con la fecha de actualización.
+4. Si la API falla, la lista guardada se conserva y la pantalla muestra un aviso con opción de
+   reintentar.
+5. La base de datos sube a la versión 2 con una migración que crea la tabla `consejos`, sin
+   borrar los datos anteriores de perfil, evaluaciones e historial.
 
 ## Cómo ejecutar
 
@@ -82,6 +109,7 @@ Para compilar desde la terminal:
 - Navigation Compose
 - Room (persistencia local)
 - DataStore Preferences
+- Retrofit 2.11 + Gson (consumo de API REST)
 - Android Studio, Gradle 9.6
 
 ## Planificación
@@ -100,3 +128,6 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 | Modularidad y persistencia local | Room para perfil, evaluaciones, respuestas y checklist; DataStore para los ajustes del recordatorio; el historial se lee desde la base local |
 | GitHub y Trello | Repositorio y tablero activos |
 | Recursos nativos | Galería (`ActivityResultContracts.GetContent`) y notificaciones (`POST_NOTIFICATIONS`) integradas en Perfil y Ajustes |
+| Consumo de API REST | `ApiService` + `RetrofitInstance` consumen JSONPlaceholder; `ConsejosScreen` con carga, error y reintento |
+| Persistencia de la API | Room guarda los consejos y su fecha de actualización; la pantalla funciona sin conexión |
+| Pruebas | 22 pruebas unitarias con Kotest, JUnit5, MockK y corrutinas de prueba |
