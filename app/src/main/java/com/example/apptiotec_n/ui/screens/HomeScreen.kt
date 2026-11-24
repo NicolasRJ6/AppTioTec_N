@@ -3,6 +3,7 @@ package com.example.apptiotec_n.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -55,6 +56,15 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
+                    label = { Text("Consejos de seguridad") },
+                    icon = { Icon(Icons.Default.Lightbulb, contentDescription = null) },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        viewModel.navigateTo(Screen.Consejos)
+                    }
+                )
+                NavigationDrawerItem(
                     label = { Text("Configuración") },
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
                     selected = false,
@@ -100,6 +110,10 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { viewModel.navigateTo(Screen.Historial) }) {
                     Text("Ver historial")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = { viewModel.navigateTo(Screen.Consejos) }) {
+                    Text("Consejos de seguridad")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { viewModel.navigateTo(Screen.Settings) }) {

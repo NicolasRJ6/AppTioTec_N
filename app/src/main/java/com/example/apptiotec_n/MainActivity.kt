@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apptiotec_n.navigation.NavigationEvent
 import com.example.apptiotec_n.navigation.Screen
+import com.example.apptiotec_n.ui.screens.ConsejosScreen
 import com.example.apptiotec_n.ui.screens.EvaluacionScreen
 import com.example.apptiotec_n.ui.screens.HistorialScreen
 import com.example.apptiotec_n.ui.screens.HomeScreen
@@ -82,6 +83,9 @@ class MainActivity : ComponentActivity() {
                             }
                             composable(route = Screen.Historial.route) {
                                 HistorialScreen(navController = navController, viewModel = viewModel)
+                            }
+                            composable(route = Screen.Consejos.route) {
+                                ConsejosScreen(viewModel = viewModel)
                             }
                         }
                     }
