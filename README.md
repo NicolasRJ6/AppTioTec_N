@@ -89,6 +89,31 @@ ConsejosScreen (Compose)
 5. La base de datos sube a la versión 2 con una migración que crea la tabla `consejos`, sin
    borrar los datos anteriores de perfil, evaluaciones e historial.
 
+## Microservicio de consejos
+
+El proyecto incluye un microservicio propio en Spring Boot (carpeta `microservicio/`) que
+expone el CRUD de los consejos de seguridad sobre una base H2 persistente.
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/api/consejos` | Lista los consejos |
+| GET | `/api/consejos/{id}` | Obtiene un consejo |
+| POST | `/api/consejos` | Crea un consejo |
+| PUT | `/api/consejos/{id}` | Actualiza un consejo |
+| DELETE | `/api/consejos/{id}` | Elimina un consejo |
+
+Para ejecutarlo, desde la carpeta `microservicio/`:
+
+```
+mvn spring-boot:run
+```
+
+Queda disponible en `http://localhost:8080`. Los datos se guardan en `microservicio/data/`
+y se conservan entre reinicios. Las pruebas se ejecutan con `mvn test`.
+
+Pendiente de integración: la app aún consume JSONPlaceholder para los consejos; la conexión
+de la app con este microservicio se agrega en el siguiente avance de EP4/EP5.
+
 ## Cómo ejecutar
 
 1. Clonar el repositorio.
@@ -110,6 +135,7 @@ Para compilar desde la terminal:
 - Room (persistencia local)
 - DataStore Preferences
 - Retrofit 2.11 + Gson (consumo de API REST)
+- Spring Boot 3.5.6 + Spring Data JPA + H2 (microservicio)
 - Android Studio, Gradle 9.6
 
 ## Planificación
@@ -130,4 +156,5 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 | Recursos nativos | Galería (`ActivityResultContracts.GetContent`) y notificaciones (`POST_NOTIFICATIONS`) integradas en Perfil y Ajustes |
 | Consumo de API REST | `ApiService` + `RetrofitInstance` consumen JSONPlaceholder; `ConsejosScreen` con carga, error y reintento |
 | Persistencia de la API | Room guarda los consejos y su fecha de actualización; la pantalla funciona sin conexión |
-| Pruebas | 22 pruebas unitarias con Kotest, JUnit5, MockK y corrutinas de prueba |
+| Pruebas | 22 pruebas unitarias con Kotest, JUnit5, MockK y corrutinas de prueba; 6 pruebas del microservicio |
+| Microservicio | Spring Boot 3.5 con CRUD de consejos en `/api/consejos`, validación y base H2 persistente |
