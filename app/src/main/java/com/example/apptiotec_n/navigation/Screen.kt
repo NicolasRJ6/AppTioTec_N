@@ -8,4 +8,5 @@ sealed class Screen(val route: String) {
     data object Resultado : Screen("resultado_screen")
     data object Historial : Screen("historial_screen")
     data object Consejos : Screen("consejos_screen")
+    data object ConsejosServidor : Screen("consejos_servidor_screen")
 }

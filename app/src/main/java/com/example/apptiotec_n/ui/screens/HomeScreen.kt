@@ -2,6 +2,7 @@ package com.example.apptiotec_n.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Menu
@@ -65,6 +66,15 @@ fun HomeScreen(
                     }
                 )
                 NavigationDrawerItem(
+                    label = { Text("Consejos del microservicio") },
+                    icon = { Icon(Icons.Default.Cloud, contentDescription = null) },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                        viewModel.navigateTo(Screen.ConsejosServidor)
+                    }
+                )
+                NavigationDrawerItem(
                     label = { Text("Configuración") },
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
                     selected = false,
@@ -114,6 +124,10 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { viewModel.navigateTo(Screen.Consejos) }) {
                     Text("Consejos de seguridad")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedButton(onClick = { viewModel.navigateTo(Screen.ConsejosServidor) }) {
+                    Text("Consejos del microservicio")
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedButton(onClick = { viewModel.navigateTo(Screen.Settings) }) {
