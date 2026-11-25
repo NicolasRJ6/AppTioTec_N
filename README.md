@@ -38,6 +38,8 @@ https://github.com/NicolasRJ6/AppTioTec_N
 - **Consejos de seguridad desde API REST:** consume `jsonplaceholder.typicode.com/posts` con
   Retrofit y guarda una copia local en Room. La pantalla muestra la última actualización y
   sigue funcionando sin conexión con los datos guardados.
+- **Consejos del microservicio:** pantalla con CRUD completo (listar, crear, editar y eliminar)
+  contra el microservicio Spring Boot; los cambios quedan guardados en la base H2.
 
 Todos los datos son ficticios. La aplicación no registra información real, sensible ni de
 menores.
@@ -54,7 +56,7 @@ app/src/main/java/com/example/apptiotec_n/
     local/            Room: entidades, DAOs y base de datos
     model/            modelos de la API remota (Consejo)
     preference/       DataStore: preferencias y recordatorios
-    remote/           Retrofit: ApiService y RetrofitInstance
+    remote/           Retrofit: ApiService (API externa) y ConsejoApiService (microservicio)
     repository/       repositorios que conectan datos locales y remotos con ViewModel
   ui/
     screens/          una pantalla por flujo
@@ -111,8 +113,33 @@ mvn spring-boot:run
 Queda disponible en `http://localhost:8080`. Los datos se guardan en `microservicio/data/`
 y se conservan entre reinicios. Las pruebas se ejecutan con `mvn test`.
 
-Pendiente de integración: la app aún consume JSONPlaceholder para los consejos; la conexión
-de la app con este microservicio se agrega en el siguiente avance de EP4/EP5.
+### Integración con la app
+
+La pantalla **Consejos del microservicio** consume estos endpoints con Retrofit:
+
+```
+ConsejoApiService (GET, POST, PUT, DELETE)
+        ↓
+ConsejosServidorRepository
+        ↓
+ConsejosServidorViewModel (StateFlow)
+        ↓
+ConsejosServidorScreen (lista + formulario de crear/editar + confirmar eliminar)
+```
+
+Después de cada cambio la app vuelve a consultar `GET /api/consejos`, por lo que la lista
+muestra siempre lo que quedó en la base H2.
+
+Para que el teléfono llegue al microservicio, con el teléfono conectado por USB:
+
+```
+adb reverse tcp:8080 tcp:8080
+```
+
+La URL base está en `data/remote/RetrofitMicroservicio.kt`. Si el teléfono se conecta por
+Wi-Fi a la misma red del computador, se reemplaza por `http://IP_DEL_COMPUTADOR:8080/`
+(por ejemplo `http://192.168.1.11:8080/`); en el emulador de Android Studio se usa
+`http://10.0.2.2:8080/`.
 
 ## Cómo ejecutar
 
@@ -156,5 +183,6 @@ https://trello.com/b/f0eKbBfy/ep2-tiotec
 | Recursos nativos | Galería (`ActivityResultContracts.GetContent`) y notificaciones (`POST_NOTIFICATIONS`) integradas en Perfil y Ajustes |
 | Consumo de API REST | `ApiService` + `RetrofitInstance` consumen JSONPlaceholder; `ConsejosScreen` con carga, error y reintento |
 | Persistencia de la API | Room guarda los consejos y su fecha de actualización; la pantalla funciona sin conexión |
-| Pruebas | 22 pruebas unitarias con Kotest, JUnit5, MockK y corrutinas de prueba; 6 pruebas del microservicio |
+| Integración con el microservicio | `ConsejoApiService` + `ConsejosServidorRepository` consumen `/api/consejos`; `ConsejosServidorScreen` permite listar, crear, editar y eliminar con avisos de error |
+| Pruebas | 32 pruebas unitarias de la app con Kotest, JUnit5, MockK y corrutinas de prueba; 6 pruebas del microservicio |
 | Microservicio | Spring Boot 3.5 con CRUD de consejos en `/api/consejos`, validación y base H2 persistente |
